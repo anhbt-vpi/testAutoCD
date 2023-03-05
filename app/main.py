@@ -1,8 +1,7 @@
-from typing import Dict, Optional, Union, Any
-
-from fastapi import Depends, FastAPI, HTTPException, Request
-from . import action, schemas, models
-from .database import engine, SessionLocal
+from fastapi import Depends, FastAPI, Request
+from .models import models
+from .services import action
+from app.database.database import SessionLocal
 from sqlalchemy.orm import Session
 
 
@@ -20,7 +19,7 @@ def get_db():
 @app.get("/products/{product}/international/price/daily")
 async def get_price(request: Request, map_db: Session = Depends(get_db)):
 
-
+    print("again")
     query_param = request.query_params._dict
     db_map_name = request.path_params["product"]
 
