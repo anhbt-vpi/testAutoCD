@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String, Any, Float
 from sqlalchemy.orm import relationship
 
-from ..database.database import Base
+from app.database.database import Base
 
 class TableModel(Base):
     __tablename__ = "fact_oilprice_input"
