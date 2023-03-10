@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app import constant
+from app import config
 
-username = constant.username
-password = constant.password
-driver = constant.driver
+username = config.username
+password = config.password
+driver = config.driver
 
 
 def connect_DB(server: str, database: str):

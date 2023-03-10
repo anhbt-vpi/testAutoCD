@@ -1,5 +1,5 @@
 username = 'anhbt@vpi.pvn.vn'
-password = 'Mac0901'
+password = ''
 driver = '{ODBC Driver 18 for SQL Server}'
 
 lookup_table = {
