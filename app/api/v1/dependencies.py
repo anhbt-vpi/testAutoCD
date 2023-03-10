@@ -3,17 +3,15 @@ from fastapi import Depends, Request
 from app.database.database import connect_DB
 from sqlalchemy import Table, MetaData
 from app import constant
-
+from app.database.dbModels import getModel
 
 async def lookup_table():
     server = constant.lookup_table.get("server")
     database = constant.lookup_table.get("database")
     SessionLocal = connect_DB(server, database)
     db = SessionLocal()
-    metadata = MetaData()
-    productInfo = Table(constant.lookup_table.get("tableName"), metadata,
-                        autoload_with=db.bind)
-    res = db.query(productInfo).all()
+    productInfoModel = getModel(constant.lookup_table.get("tableName"), db)
+    res = db.query(productInfoModel).all()
     lookup_table = {}
     for item in res:
         key = item[0]

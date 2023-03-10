@@ -14,6 +14,3 @@ error_message = {
     "table_not_found": "Table not found. Please check your table name again"
 }
 
-endpoints = {
-    "datamart": "/products/{product}/international/price/daily"
-}
