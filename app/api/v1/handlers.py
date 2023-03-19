@@ -1,32 +1,28 @@
 from fastapi import Request
 from sqlalchemy.orm import Session
 from app.database.dbModels import getModel
+from sqlalchemy import text
 
 
-async def get_data(request: Request, lookup_table, db: Session):
+async def get_data(request: Request, db: Session):
     res = []
-    tableList = lookup_table[request.path_params.get("product")]['tableList']
+    TableModel = getModel(request.path_params.get("tableName"), db)
+    # TableModel = getModel(request.query_params._dict.get("tableName"), db)
+    results = db.query(TableModel).all()
+    for result in results:
+        res.append(result._mapping)
 
-    if (request.query_params._dict.get("tableName")):
-
-        TableModel = getModel(request.query_params._dict.get("tableName"), db)
-        results = db.query(TableModel).all()
-        for result in results:
-            res.append(result._mapping)
-    else:
-        for item in tableList:
-            TableModel = getModel(item, db)
-            results = db.query(TableModel).all()
-            obj = {
-                "tableName": item,
-                "data": []
-            }
-            for result in results:
-                obj.get("data").append(result._mapping)
-            res.append(obj)
     return {"data": res}
 
 
-async def get_facet(request: Request, lookup_table):
-    tableList = lookup_table[request.path_params.get("product")]['tableList']
-    return {"tableName": tableList}
+async def get_table_name(request: Request, db: Session):
+    str_sql = text("SELECT table_name FROM information_schema.tables")
+    result_query = db.execute(str_sql)
+    results = result_query.fetchall()
+    table_names = [row[0] for row in results]
+    drop = ["relationshipColumns", "relationships", "database_firewall_rules"]
+    new_result = [elem for elem in table_names if elem not in drop]
+    return {"tableName": new_result}
+
+
+

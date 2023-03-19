@@ -26,10 +26,28 @@ async def lookup_table():
     db.close()
     return lookup_table
 
-
-async def get_db(request: Request, lookup_table=Depends(lookup_table)):
-    server = lookup_table[request.path_params.get("product")]['server']
-    database = lookup_table[request.path_params.get("product")]['database']
+map_db = {
+    "crudeOil": {
+        "server": "xznozrobo3funm76yoyaoh75wm-lvvgvquleiuurnfvyvnetw7hoq.datamart.pbidedicated.windows.net",
+        "database": "Oil price forecast"
+    },
+    "lpg": {
+        "server": "xznozrobo3funm76yoyaoh75wm-fr3e3p3dk6eejffi7w4p27iybe.datamart.pbidedicated.windows.net",
+        "database": "2023_LPG_Datamart_Hanhdh"
+    },
+    "hydrogen": {
+        "server": "xznozrobo3funm76yoyaoh75wm-bskk54c73wdejgsv4xf2kugg5i.datamart.pbidedicated.windows.net",
+        "database": "Global_Hydrogen_Data"
+    },
+    "crudeOilV2": {
+        "server": "xznozrobo3funm76yoyaoh75wm-joiz6h43v2cuxennbhz3uklaa4.datamart.pbidedicated.windows.net",
+        "database": "Crude Oil Price V2"
+    }
+}
+async def get_db(request: Request, map_db = map_db):
+    product = map_db.get(request.path_params.get("product"))
+    server = product.get("server")
+    database = product.get("database")
     SessionLocal = connect_DB(server, database)
     map_db = SessionLocal()
     try:
@@ -47,3 +65,5 @@ async def validate(request: Request, lookup_table=Depends(lookup_table)):
     query_param = request.query_params._dict.get("tableName")
     if query_param is not None and query_param not in lookup_table[request.path_params.get("product")]['tableList']:
         raise HTTPException(status_code=400, detail=config.error_message.get("table_not_found"))
+
+
