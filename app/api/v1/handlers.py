@@ -60,8 +60,15 @@ async def get_tables(tables):
 async def get_columns(request: Request, db: Session):
     tableName = request.path_params.get("tableName")
     TableModel = getModel(tableName, db)
-    new_result = [elem.name for elem in TableModel.columns]
-    return {"columns": new_result}
+    res = []
+    for column in TableModel.columns:
+        if isinstance(column.type, (Date, Integer, Float)):
+            res.append({column.name: f"Query this column with {column.name} or within a range of values between {column.name + '_MIN'} and {column.name + '_MAX'}"})
+        else:
+            res.append({column.name: f"Query this column with {column.name}"})
+
+
+    return {"columns": res}
 
 
 
