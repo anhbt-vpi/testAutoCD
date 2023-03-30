@@ -1,5 +1,27 @@
-username = 'anhbt@vpi.pvn.vn'
-password = 'Mac0901'
+from office365.runtime.auth.client_credential import ClientCredential
+from office365.sharepoint.client_context import ClientContext
+
+
+def password():
+    # --- Get Item in Sharepoint list
+    sp_client_id = '52fdd257-fd3e-4f56-86ca-3d5c7091c110'
+    sp_client_secret = 'z+pRoP0UCRZBggLALjJ2Yw/GsBo8tuZF0A4qbKK3XaI='
+    sp_client_credentials = ClientCredential(sp_client_id, sp_client_secret)
+    sp_site_url = 'https://viendaukhivn.sharepoint.com/sites/VPIDataAnalytics30-RefreshPassword'
+    ctx = ClientContext(sp_site_url).with_credentials(sp_client_credentials)
+    target_list = ctx.web.lists.get_by_title("password_storage")
+    target_item = target_list.get_item_by_id("1")
+
+    # --- Get current_password
+    ctx.load(target_item)
+    ctx.execute_query()
+    item_value = target_item.properties
+    password = str(item_value["current_password"])
+    return password
+
+
+
+username = 'api@oilgas.ai'
 driver = '{ODBC Driver 18 for SQL Server}'
 
 map_db = {
@@ -18,6 +40,14 @@ map_db = {
     "crudeOilV2": {
         "server": "xznozrobo3funm76yoyaoh75wm-joiz6h43v2cuxennbhz3uklaa4.datamart.pbidedicated.windows.net",
         "database": "Crude Oil Price V2"
+    },
+    "gas": {
+        "server": "xznozrobo3funm76yoyaoh75wm-hq556rblkuhevbjr3hywplbmcy.datamart.pbidedicated.windows.net",
+        "database": "Domestic Gas Market_Production"
+    },
+    "shippingCost": {
+        "server": "xznozrobo3funm76yoyaoh75wm-meed4hmxotsevljamvd2b3tp7i.datamart.pbidedicated.windows.net",
+        "database": "LNG_Test"
     }
 }
 

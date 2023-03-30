@@ -25,7 +25,7 @@ RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 
 RUN pip install pyodbc
 RUN pip install sqlalchemy
-
+RUN pip install Office365-REST-Python-Client
 WORKDIR /code
 
 COPY requirements.txt /code/requirements.txt

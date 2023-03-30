@@ -3,11 +3,12 @@ from sqlalchemy.orm import sessionmaker
 from app import config
 
 username = config.username
-password = config.password
+
 driver = config.driver
 
 
 def connect_DB(server: str, database: str):
+    password = config.password()
     params = 'Driver=' + driver + ';Server=' + server + ',1433;Database=' + database + ';Uid={' + username + '};Pwd={' + \
              password + '};Encrypt=yes;TrustServerCertificate=no;Connection ' \
                         'Timeout=30;Authentication=ActiveDirectoryPassword'
