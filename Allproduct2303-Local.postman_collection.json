@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "18ee917a-9823-46a7-88e7-70e1e353ebca",
+		"name": "Allproduct2303-Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26193592"
+	},
+	"item": [
+		{
+			"name": "Domestic Gas",
+			"item": [
+				{
+					"name": "1. Get data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/gas/Gas_WH_Price?Start_Date=2020&End_Date=2023",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"gas",
+								"Gas_WH_Price"
+							],
+							"query": [
+								{
+									"key": "Basin",
+									"value": "Khí Cửu Long",
+									"description": "Name of basin ",
+									"disabled": true
+								},
+								{
+									"key": "Start_Date",
+									"value": "2020",
+									"description": "Starting date of the time filtered in 1/1/2010 - 1/1/2025"
+								},
+								{
+									"key": "End_Date",
+									"value": "2023",
+									"description": "Ending Date of the time filtered in 1/1/2010 - 1/1/2025"
+								},
+								{
+									"key": "Min_Price",
+									"value": "3",
+									"description": "Min value of price",
+									"disabled": true
+								},
+								{
+									"key": "Max_Price",
+									"value": "3.67128948680064",
+									"description": "Max value of price",
+									"disabled": true
+								},
+								{
+									"key": "Unit",
+									"value": "",
+									"description": "Unit of price",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shipping test",
+			"item": [
+				{
+					"name": "1.Get data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/shippingCost/Shipping_cost?Ship_name=Ship 6&Start_point=USA",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"shippingCost",
+								"Shipping_cost"
+							],
+							"query": [
+								{
+									"key": "Ship_name",
+									"value": "Ship 6",
+									"description": "Name of ship."
+								},
+								{
+									"key": "Start_point",
+									"value": "USA",
+									"description": "Start point of voyage."
+								},
+								{
+									"key": "End_point",
+									"value": "2023",
+									"description": "End point of voyage.",
+									"disabled": true
+								},
+								{
+									"key": "Min_Ship_size",
+									"value": "3",
+									"description": "Min size of ship.",
+									"disabled": true
+								},
+								{
+									"key": "Max_Ship_size",
+									"value": "3.67128948680064",
+									"description": "Max size of ship.",
+									"disabled": true
+								},
+								{
+									"key": "Min_Trip_length",
+									"value": "",
+									"description": "Length of trip.",
+									"disabled": true
+								},
+								{
+									"key": "Max_Trip_length",
+									"value": "",
+									"description": "Length of trip.",
+									"disabled": true
+								},
+								{
+									"key": "Min_Cost_of_voyage",
+									"value": "",
+									"description": "Cost of voyage.",
+									"disabled": true
+								},
+								{
+									"key": "Max_Cost_of_voyage",
+									"value": "",
+									"description": "Cost of voyage.",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
