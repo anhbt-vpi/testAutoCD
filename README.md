@@ -15,4 +15,4 @@ To run the app, use the following command in terminal:
 
 ## Usage
 
-After run the app, you can import the file Allproduct2303.postman_collection.json to you postman to test the API with your product, table, parameter.
+After run the app, you can import the file Allproduct2303-Local.postman_collection.json to you postman to test the API with your product, table, parameter.
