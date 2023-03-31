@@ -9,10 +9,8 @@ from sqlalchemy import text
 
 async def validate(request: Request):
     path_param = request.path_params.get("product")
-    if path_param is None:
-        raise HTTPException(status_code=400, detail=config.error_message.get("missing_product"))
-    if path_param not in config.map_db.keys():
-        raise HTTPException(status_code=400, detail=config.error_message.get("product_not_found"))
+    if path_param is None or path_param not in config.map_db.keys():
+        raise HTTPException(status_code=400, detail="Invalid input")
 
 
 async def get_db(request: Request, map_db=config.map_db, validate=Depends(validate)):
