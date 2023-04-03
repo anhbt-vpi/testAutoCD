@@ -11,18 +11,14 @@ class QueryResponse(BaseModel):
     records_returned: int
 
 async def get_data_filter(request: Request, db: Session):
-
-    responseContainer = {}
-    request_info = {"endpoint": request.url.path,
-                    "params": dict(request.query_params)}
-    haveLength = request.query_params._dict.get("length")
-    length = int(request.query_params._dict.pop('length', 5000))
-    orderby = request.query_params._dict.pop('orderby', None)
-    offset = int(request.query_params._dict.pop('offset', 0))
-    tableName = request.path_params.get("tableName")
-    TableModel = getModel(tableName, db)
-    condition = []
     try:
+        haveLength = request.query_params._dict.get("length")
+        length = int(request.query_params._dict.pop('length', 5000))
+        orderby = request.query_params._dict.pop('orderby', None)
+        offset = int(request.query_params._dict.pop('offset', 0))
+        tableName = request.path_params.get("tableName")
+        TableModel = getModel(tableName, db)
+        condition = []
         str_sql = text("SELECT table_name FROM information_schema.tables")
         result_query = db.execute(str_sql)
         results = result_query.fetchall()
@@ -30,18 +26,14 @@ async def get_data_filter(request: Request, db: Session):
         drop = ["relationshipColumns", "relationships", "database_firewall_rules"]
         list_table = [elem for elem in table_names if elem not in drop]
     except Exception as e:
-        raise HTTPException(status_code=400, detail="Something wrong, contact your admin")
+        raise HTTPException(status_code=400, detail="Invalid input")
     if tableName is not None and tableName not in list_table:
         raise HTTPException(status_code=400, detail="Table not found. Please check your table name again")
 
     if orderby is not None and orderby not in TableModel.c.keys():
         raise HTTPException(status_code=400, detail=f"order by column {orderby} not found in table {tableName}")
     if offset != 0 and orderby is None:
-        error = {
-            "errorMsg": "order by is required when you want to use offset",
-            "code": 400
-        }
-        raise HTTPException(status_code=400, detail=error)
+        raise HTTPException(status_code=400, detail="order by is required when you want to use offset")
     for column in TableModel.columns:
         if isinstance(column.type, (Integer, Float, BIGINT)):
             min = request.query_params._dict.pop('Min_' + column.name, None)
@@ -62,11 +54,7 @@ async def get_data_filter(request: Request, db: Session):
 
     for key in others.keys():
         if key.rstrip('_MAX').rstrip('_MIN') not in TableModel.c.keys():
-            error = {
-                "errorMsg": f"{key} not found in table {tableName}",
-                "code": 400
-            }
-            raise HTTPException(status_code=400, detail=error)
+            raise HTTPException(status_code=400, detail=f"{key} not found in table {tableName}")
 
     for key, value in others.items():
         condition.append(TableModel.c[key] == value)
@@ -88,25 +76,16 @@ async def get_data_filter(request: Request, db: Session):
         for result in results:
             res.append(result._mapping)
     except Exception as e:
-        error = {
-            "errorMsg": "Something wrong, contact your admin",
-            "code": 400
-        }
-        raise HTTPException(status_code=400, detail=error)
+        raise HTTPException(status_code=400, detail="Invalid input")
     if len(res) == 0:
-        error = {
-            "errorMsg": "No records found with your input",
-            "code": 404
-        }
-        raise HTTPException(status_code=404, detail=error)
+        raise HTTPException(status_code=404, detail="No records found with your input")
+    responseContainer = {}
     if total_records > 5000 and length >= 5000 and not haveLength:
-        responseContainer["warnings"] = {
-            "warning": "incomplete return",
-            "description": "The API can only return 5000 rows in JSON format.  Please consider constraining your request with parameters or using offset to paginate results."
-        }
-    responseContainer["response"] = {"total_records": total_records, "records_returned": len(res), "offset": offset, "orderby": orderby, "data": res}
-    responseContainer["request"] = request_info
-    responseContainer["apiVersion"] = "0.0.1"
-
+        responseContainer["warnings"] =  "The API can only return 5000 rows in JSON format.  Please consider constraining your request with parameters or using length, offset, orderby to paginate results."
+    responseContainer["total_records"] = total_records
+    responseContainer["records_returned"] = len(res)
+    responseContainer["offset"] = offset
+    responseContainer["orderby"] = "" if orderby is None else orderby
+    responseContainer["data"] = res
     return responseContainer
 
