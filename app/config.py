@@ -48,6 +48,10 @@ map_db = {
     "shippingCost": {
         "server": "xznozrobo3funm76yoyaoh75wm-meed4hmxotsevljamvd2b3tp7i.datamart.pbidedicated.windows.net",
         "database": "LNG_Test"
+    },
+    "testAuto": {
+        "server": "xznozrobo3funm76yoyaoh75wm-meed4hmxotsevljamvd2b3tp7i.datamart.pbidedicated.windows.net",
+        "database": "LNG_Test"
     }
 }
 
