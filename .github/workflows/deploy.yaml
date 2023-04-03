@@ -1,0 +1,19 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Update code
+        run: git pull
+      - name: Build and deploy
+        run: |
+          cd /Users/vpi452/PycharmProjects/BaseFinalDatamartV1-render/docker-compose.yml
+          docker-compose up --build
