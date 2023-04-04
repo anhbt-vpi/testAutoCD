@@ -22,5 +22,5 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /Users/vpi452/PycharmProjects/BaseFinalDatamartV1-render
-          git pull origin master
+          git pull
           docker-compose up --build
